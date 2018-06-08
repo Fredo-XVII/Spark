@@ -14,3 +14,6 @@ Anything Spark
 # winutils
  - instructions: https://www.linkedin.com/pulse/setting-up-sparkr-windows-machine-ramabhadran-kapistalam/
  - download file: https://github.com/srccodes/hadoop-common-2.2.0-bin/archive/master.zip?lipi=urn%3Ali%3Apage%3Ad_flagship3_pulse_read%3BX3ioGEa2RT67c6PfQFqcRQ%3D%3D
+
+# System Commands/Linux
+ - get local host ip - https://stackoverflow.com/questions/14357219/function-for-retrieving-own-ip-address-from-within-r
