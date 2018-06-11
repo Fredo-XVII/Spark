@@ -17,3 +17,21 @@ Anything Spark
 
 # System Commands/Linux
  - get local host ip - https://stackoverflow.com/questions/14357219/function-for-retrieving-own-ip-address-from-within-r
+
+# General Code
+```
+# Stop Spark: On top for easy access and because it is really important
+sparkR.stop()
+Sys.getenv("SPARK_HOME") 
+Sys.getenv("HADOOP_CONF_DIR")
+Sys.getenv("SPARK_CONF_DIR")
+Sys.setenv("SPARK_HOME" = "/usr/share/spark-tgt-2.3.0.") # "/usr/local/")
+# finds SparkR in Hadoop
+library(SparkR, lib.loc = c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib")))
+SparkR.sql()
+SparkR.take()
+SparkR.collect()
+SparkR::createOrReplaceTempView(df,"df_v")
+SparkR::persist(df,"MEMORY_AND_DISK")
+SparkR::saveAsTable(df, "schema.df", mode = "overwrite)
+```
