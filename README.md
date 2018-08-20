@@ -6,6 +6,7 @@ Anything Spark
  - https://github.com/rstudio/cheatsheets/raw/master/sparklyr.pdf
 
 # SparkR
+ - Git Bash Log In: ssh edge.db.co.com -l workid
 
 
 # PySpark
