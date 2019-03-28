@@ -9,6 +9,6 @@ library(rJava) # didn't need this to get below to work.
 sparkR.session(enableHiveSupport = TRUE ,
                master = "local[*]", 
                sparkHome = Sys.getenv("SPARK_HOME") , # this was the missing link!!
-               sparkConfig = list(spark.driver.memory = "2g", 
+               sparkConfig = list(spark.driver.memory = "2g", spark.sql.crossJoin.enabled=TRUE,
                                   spark.sql.warehouse.dir="C:\\Apps\\winutils\\winutils-master\\hadoop-2.7.1")
 )
