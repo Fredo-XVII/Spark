@@ -1,5 +1,9 @@
 ## this connection to standalone on your machine for Spark
 
+## spark.sql options list:
+properties <- SparkR::sql("SET -v")
+SparkR::showDF(properties, numRows = 200, truncate = FALSE)
+
 # Testing Spark ----- not needed to run on bigRED
 
 library(SparkR, lib.loc = c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib")))
