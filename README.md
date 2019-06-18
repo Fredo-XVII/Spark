@@ -35,4 +35,9 @@ SparkR.collect()
 SparkR::createOrReplaceTempView(df,"df_v")
 SparkR::persist(df,"MEMORY_AND_DISK")
 SparkR::saveAsTable(df, "schema.df", mode = "overwrite)
+# Management
+properties <- sql("SET -v")
+showDF(properties, numRows = 200, truncate = FALSE)
+# Standardized Workflow
+
 ```
