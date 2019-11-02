@@ -26,7 +26,7 @@ sparkR.stop()
 Sys.getenv("SPARK_HOME") 
 Sys.getenv("HADOOP_CONF_DIR")
 Sys.getenv("SPARK_CONF_DIR")
-Sys.setenv("SPARK_HOME" = "/usr/share/spark-tgt-2.3.0.") # "/usr/local/")
+Sys.setenv("SPARK_HOME" = "/usr/share/spark-2.3.0") # "/usr/local/")
 # finds SparkR in Hadoop
 library(SparkR, lib.loc = c(file.path(Sys.getenv("SPARK_HOME"), "R", "lib")))
 SparkR.sql()
