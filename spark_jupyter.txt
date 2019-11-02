@@ -1,0 +1,52 @@
+command:
+> sh /home_dir/build_jupyter_env.sh sh_jupyter
+
+file:
+if [ $2 -lt 5000 ] || [ $2 -gt 65000 ]; then
+  echo "Error: Port number must be between 5000 and 65000"
+  exit 1
+fi
+
+mkdir -p ~/my-jupyter-projects
+mkdir ~/my-jupyter-projects/$1
+
+cd ~/my-jupyter-projects/$1 #navigate to the newly created folder
+
+/usr/local/python3/bin/python3 -m venv venv
+source venv/bin/activate
+
+pip install jupyter
+
+mkdir ./venv/share/jupyter/kernels/ir34
+cd ./venv/share/jupyter/kernels/ir34
+
+echo '
+{
+  "argv": ["/usr/local/R/bin/R", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"],
+  "display_name": "R 3.6.0",
+  "language": "R"
+}
+' >> kernel.json
+
+rm $HOME/my-jupyter-projects/$1/venv/share/jupyter/kernels/python3/kernel.json
+echo '
+{
+ "argv": [
+  "'$HOME/my-jupyter-projects/$1/venv/bin/python'",
+  "-m",
+  "ipykernel_launcher",
+  "-f",
+  "{connection_file}"
+ ],
+ "display_name": "Python 3 ('$1')",
+ "language": "python"
+}
+' >> $HOME/my-jupyter-projects/$1/venv/share/jupyter/kernels/python3/kernel.json
+
+deactivate
+
+echo "
+export PYSPARK_PYTHON=\"$HOME/my-jupyter-projects/$1/venv/bin/python\"
+export PYSPARK_DRIVER_PYTHON=\"$HOME/my-jupyter-projects/$1/venv/bin/jupyter\"
+export PYSPARK_DRIVER_PYTHON_OPTS=\"notebook --no-browser --port=$2 --ip='0.0.0.0'\"
+" >> $HOME/.pyspark_jupyter_profile_$1
