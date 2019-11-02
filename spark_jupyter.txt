@@ -1,9 +1,171 @@
+# Jupyter Notebook with Python, R, and Julia on Hadoop
+
+This page is to guide users through setting up a Jupyter Notebook Environment with both Python 3.7, R-3.6.0 (the versions on hadoop) and Julia 1.2.0
+
+## Set up a Virtual environment
+
+- Login to hadoop (using Putty on Windows or Terminal/iTerm on Mac)
+- Create a project folder for the project you're working on:
+
+```
+mkdir ~/my-project
+cd ~/my-project #navigate to the newly created folder
+```
+
+-------------------------------
+Set up a virtual environment:
+#!/usr/bin/env bash
+
+# Use Python3's built-in `venv` module to create a virtual environment named
+# `venv` (you can name it whatever you like), which gives us an isolated
+# runtime:
+/usr/local/python3/bin/python3 -m venv venv
+
+# Switch into the env (in the context of this script only) so that the `python`
+# and `pip` commands refer to those in the env:
+source venv/bin/activate
+
+# Upgrade both pip and setuptools, and then install a simple 3rd party package
+# that's not already available on hadoop. Note that we *do not* need to install
+# pyspark:
+pip install -U setuptools pip
+pip install xdg
+------------------------------
+
+### Use Python3's built-in `venv` module to create a virtual environment named `venv` (you can name it whatever you like), which gives us an isolated runtime:
+
+```
+/usr/local/python3/bin/python3 -m venv venv
+```
+
+### Switch into the env (in the context of this script only) so that the `python` and `pip` commands refer to those in the env:
+```
+source venv/bin/activate
+```
+
+Now you are inside the virtual environment - this is your space to install the packages required for your project. Since we're dealing with getting a Jupyter NB setup, run the below command:
+
+```
+pip install jupyter
+```
+
+Once this is complete, we now setup the R hadoop kernel for the Jupyter NB:
+
+```
+mkdir ./venv/share/jupyter/kernels/ir3.6
+cd ./venv/share/jupyter/kernels/ir3.6
+```
+
+Use your favorite editor to create a `kernel.json` file - below are instructions for using `vim`
+
+```
+vi kernel.json
+```
+
+This will create a new file, where you can edit the file using the below steps:
+
+1. Press `I`
+2. Paste the below text using either `Ctrl + V` (Windows) or `Cmd + V` (Mac)
+
+```
+{
+  "argv": ["/usr/local/R/bin/R", "--slave", "-e", "IRkernel::main()", "--args", "{connection_file}"],
+  "display_name": "R 3.6.0",
+  "language": "R"
+}
+```
+
+Thanks to me for taking the lead on getting the `IRkernel` library installed for R on hadoop
+
+3. Save the file by following the steps below:
+- Press `esc`
+- Type `:wq!` and press `Enter`
+
+Since you're probably still in the `venv`, you can exit the `venv` by typing `deactivate` and press Enter
+
+```
+deactivate
+```
+
+Now setup your Jupyter NB profile by following the below steps:
+
+```
+vi $HOME/.pyspark_jupyter_profile_jupyter
+```
+
+Now press `I` and paste the below 3 lines using either `Ctrl + V` (Windows) or `Cmd + V` (Mac)
+
+```
+export PYSPARK_PYTHON="$HOME/my-project/venv/bin/python"
+export PYSPARK_DRIVER_PYTHON="$HOME/my-project/venv/bin/jupyter"
+export PYSPARK_DRIVER_PYTHON_OPTS="notebook --no-browser --port=<port_num> --ip='0.0.0.0'"
+```
+
+**Replace <port_num> in the above step with any number between x,000 and xx,000**
+
+Save the file by following the steps below:
+- Press `esc`
+- Type `:wq!` and press `Enter`
+
+Now fire up a Jupyter NB using the below commands:
+
+```
+cd ~/my-project #My project is the name of the project folder you created in the first few steps
+source $HOME/.pyspark_jupyter_profile_jupyter && pyspark-version#
+```
+
+You should now have the option of opening up either an R or Python kernel, as required. You can use Spark (`SparkR` or `sparklyr`) to work with tables on hadoop directly, through Jupyter notebooks.
+
+
+## BONUS - Add Julia kernel to Jupyter NB
+
+`cd` to your `venv` folder by typing in
+
+`cd ~/my-project/venv`
+
+Activate the `venv` by typing in
+
+`source ./bin/activate`
+
+Now download the Julia installation file using 
+
+`wget https://julialang-s3.julialang.org/bin/linux/x64/1.1/julia-1.1.0-linux-x86_64.tar.gz`
+
+Once the file is downloaded, extract the tar file using:
+
+`tar -xvzf julia-1.2.0-linux-x86_64.tar.gz`
+
+Now open the julia shell using:
+
+`~/my-project/venv/julia-1.2.0/bin/julia`
+
+Now install the `IJulia` package using the below steps:
+
+```
+julia> using Pkg
+julia> Pkg.add("IJulia")
+julia> exit()
+```
+
+This will install the Julia kernel, which can be accessed once you fire up your Jupyter NB
+
+```
+deactivate
+source $HOME/.pyspark_jupyter_profile_jupyter && pyspark-2.3
+```
+
+
+
+
+
+
+##### File Format #####
 command:
 > sh /home_dir/build_jupyter_env.sh sh_jupyter
 
 file:
-if [ $2 -lt 5000 ] || [ $2 -gt 65000 ]; then
-  echo "Error: Port number must be between 5000 and 65000"
+if [ $2 -lt xxxx ] || [ $2 -gt xxxxx ]; then
+  echo "Error: Port number must be between xxxx and xxxxx"
   exit 1
 fi
 
